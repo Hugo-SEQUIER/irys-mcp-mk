@@ -8,6 +8,7 @@ export interface MCPServerMetaData {
     usage: number;
     likes: number;
     categories: string[];
+    status: 'active' | 'inactive';
     createdAt: string;
     updatedAt: string;
 }

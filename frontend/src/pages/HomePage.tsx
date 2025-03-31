@@ -102,7 +102,6 @@ const HomePage: React.FC = () => {
                 textTransform: 'uppercase'
               }}
             >
-              <Box component="span" sx={{ display: 'block' }}>OPEN-SOURCE</Box>
               <Box component="span" sx={{ display: 'block' }}>MCP SERVER</Box>
               <Box component="span" sx={{ display: 'block' }}>MARKETPLACE</Box>
             </Typography>

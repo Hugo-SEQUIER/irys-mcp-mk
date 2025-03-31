@@ -90,8 +90,6 @@ const ServerCard: React.FC<ServerCardProps> = ({ server, onLike }) => {
             src={server.imageUrl}
             alt={server.name}
             sx={{
-              width: '70%',
-              height: '70%',
               objectFit: 'contain'
             }}
           />

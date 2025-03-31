@@ -1,7 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Card, CardContent, Typography, Box, Button, alpha } from '@mui/material';
-import { Favorite, GitHub } from '@mui/icons-material';
+import { Link, useNavigate } from 'react-router-dom';
+import { Card, CardContent, Typography, Box, Button, Chip, Stack, Tooltip, alpha } from '@mui/material';
+import { Favorite, GitHub, Download, Person } from '@mui/icons-material';
 import { MCPServer } from '../types/MCPServer';
 
 interface ServerCardProps {
@@ -10,6 +10,8 @@ interface ServerCardProps {
 }
 
 const ServerCard: React.FC<ServerCardProps> = ({ server, onLike }) => {
+  const navigate = useNavigate();
+
   const handleLike = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -18,8 +20,13 @@ const ServerCard: React.FC<ServerCardProps> = ({ server, onLike }) => {
     }
   };
 
+  const handleCardClick = () => {
+    navigate(`/servers/${server.id}`);
+  };
+
   return (
     <Card 
+      onClick={handleCardClick}
       sx={{ 
         height: '100%', 
         display: 'flex', 
@@ -38,6 +45,8 @@ const ServerCard: React.FC<ServerCardProps> = ({ server, onLike }) => {
         borderTopRightRadius:0,
         position: 'relative',
         overflow: 'visible',
+        opacity: server.status === 'active' ? 1 : 0.8,
+        cursor: 'pointer',
         '&::before': {
           content: '""',
           position: 'absolute',
@@ -45,7 +54,9 @@ const ServerCard: React.FC<ServerCardProps> = ({ server, onLike }) => {
           left: 0,
           right: 0,
           height: '4px',
-          background: 'linear-gradient(90deg, #4caf50 0%, #ff9800 50%, #f44336 100%)',
+          background: server.status === 'active' 
+            ? 'linear-gradient(90deg, #4caf50 0%, #ff9800 50%, #f44336 100%)'
+            : 'linear-gradient(90deg, #616161 0%, #9e9e9e 50%, #616161 100%)',
           borderTopLeftRadius: 0,
           borderTopRightRadius: 0,
         }
@@ -101,13 +112,29 @@ const ServerCard: React.FC<ServerCardProps> = ({ server, onLike }) => {
             }}
           >
             {server.name}
+            <Tooltip title={`Status: ${server.status}`} arrow placement="top">
+              <Box
+                component="span"
+                sx={{
+                  ml: 1,
+                  display: 'inline-block',
+                  width: 7,
+                  height: 7,
+                  borderRadius: '50%',
+                  bgcolor: server.status === 'active' 
+                    ? 'success.main'
+                    : 'error.main',
+                  verticalAlign: 'middle'
+                }}
+              />
+            </Tooltip>
           </Typography>
           
           <Typography 
             variant="body2" 
             color="text.secondary" 
             sx={{ 
-              mb: 1.5,
+              mb: 0.5,
               overflow: 'hidden', 
               textOverflow: 'ellipsis', 
               display: '-webkit-box',
@@ -119,6 +146,55 @@ const ServerCard: React.FC<ServerCardProps> = ({ server, onLike }) => {
           >
             {server.description}
           </Typography>
+          
+          {/* Author */}
+          <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
+            <Person sx={{ fontSize: '0.8rem', color: 'text.secondary', mr: 0.5 }} />
+            <Typography 
+              variant="caption" 
+              sx={{ 
+                color: 'text.secondary',
+                fontSize: '0.7rem',
+                fontStyle: 'italic'
+              }}
+            >
+              by <Box component="span" sx={{ color: 'primary.main' }}>{server.author}</Box>
+            </Typography>
+          </Box>
+
+          {/* Categories */}
+          <Box sx={{ mb: 1 }}>
+            <Stack direction="row" spacing={0.5} sx={{ flexWrap: 'wrap', gap: 0.5 }}>
+              {server.categories.slice(0, 2).map((category) => (
+                <Chip 
+                  key={category} 
+                  label={category} 
+                  size="small" 
+                  sx={{ 
+                    bgcolor: (theme) => alpha(theme.palette.primary.main, 0.1),
+                    color: 'primary.main',
+                    fontWeight: 500,
+                    borderRadius: 1,
+                    height: 20,
+                    fontSize: '0.65rem'
+                  }} 
+                />
+              ))}
+              {server.categories.length > 2 && (
+                <Chip 
+                  label={`+${server.categories.length - 2}`} 
+                  size="small" 
+                  sx={{ 
+                    bgcolor: alpha('#fff', 0.05), 
+                    color: 'text.secondary',
+                    borderRadius: 1,
+                    height: 20,
+                    fontSize: '0.65rem'
+                  }}
+                />
+              )}
+            </Stack>
+          </Box>
 
           {/* Actions Row */}
           <Box sx={{ 
@@ -141,13 +217,15 @@ const ServerCard: React.FC<ServerCardProps> = ({ server, onLike }) => {
                 }
               }}
             >
-              Like
+              {server.likes}
             </Button>
             
             <Button 
               component={Link} 
               to={`/servers/${server.id}`} 
               size="small" 
+              startIcon={<Download sx={{ color: 'text.primary', fontSize: '0.9rem' }} />}
+              onClick={(e) => e.stopPropagation()}
               sx={{ 
                 color: 'text.primary',
                 fontSize: '0.7rem',
@@ -158,7 +236,7 @@ const ServerCard: React.FC<ServerCardProps> = ({ server, onLike }) => {
                 }
               }}
             >
-              Usage
+              {server.downloads || 0}
             </Button>
             
             <Button 
@@ -167,6 +245,7 @@ const ServerCard: React.FC<ServerCardProps> = ({ server, onLike }) => {
               rel="noopener noreferrer" 
               size="small" 
               startIcon={<GitHub sx={{ fontSize: '0.9rem' }} />}
+              onClick={(e) => e.stopPropagation()}
               sx={{ 
                 color: '#f44336',
                 fontSize: '0.7rem',

@@ -12,6 +12,7 @@ export const mockMCPServers: MCPServer[] = [
     categories: ['AI', 'LLM', 'Function-calling'],
     status: 'active',
     likes: 324,
+    downloads: 8754,
     usageStats: {
       totalRequests: 1500000,
       activeUsers: 45000
@@ -32,6 +33,7 @@ export const mockMCPServers: MCPServer[] = [
     categories: ['AI', 'LLM', 'Multimodal', 'Tool-use'],
     status: 'active',
     likes: 256,
+    downloads: 5432,
     usageStats: {
       totalRequests: 980000,
       activeUsers: 32000
@@ -53,6 +55,7 @@ export const mockMCPServers: MCPServer[] = [
     categories: ['AI', 'Image', 'Multimodal'],
     status: 'active',
     likes: 189,
+    downloads: 3218,
     usageStats: {
       totalRequests: 750000,
       activeUsers: 28000
@@ -73,6 +76,7 @@ export const mockMCPServers: MCPServer[] = [
     categories: ['AI', 'Audio'],
     status: 'inactive',
     likes: 132,
+    downloads: 1876,
     usageStats: {
       totalRequests: 320000,
       activeUsers: 12000
@@ -94,6 +98,7 @@ export const mockMCPServers: MCPServer[] = [
     categories: ['AI', 'LLM', 'Tool-use', 'Function-calling'],
     status: 'active',
     likes: 278,
+    downloads: 6543,
     usageStats: {
       totalRequests: 2100000,
       activeUsers: 53000

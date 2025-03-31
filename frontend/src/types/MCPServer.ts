@@ -22,6 +22,7 @@ export interface MCPServer {
   categories: MCPServerCategory[];
   status: MCPServerStatus;
   likes: number;
+  downloads: number;
   usageStats: {
     totalRequests: number;
     activeUsers: number;
